@@ -51,9 +51,9 @@ export default function(vectors) {
   }
 
   function force(alpha) {
-    for (var iteration = 0 iteration < iterations ++iteration) {
-      for (var i = 0, source, target i < totalVectors ++i) {
-        source = vectors[i].source, target = vectors[i].target
+    for (var iteration = 0; iteration < iterations; ++iteration) {
+      for (var i = 0, source, target; i < totalVectors; ++i) {
+        source = vectors[i].source, target = vectors[i].target;
 
         target.vx += (source.x + source.vx + xComponents[i] - target.x) * strengths[i] * alpha
         target.vy += (source.y + source.vy + yComponents[i] - target.y) * strengths[i] * alpha
@@ -72,7 +72,7 @@ export default function(vectors) {
     totalVectors = vectors.length
     totalVectorsConnectingNode = new Array(totalNodes)
     // convert IDs in `vectors` to object references, and count the number of vectors connecting to each node
-    for (i = 0 i < totalVectors ++i) {
+    for (i = 0; i < totalVectors; ++i) {
       vector = vectors[i], vector.index = i
       if (typeof vector.source !== "object") vector.source = find(nodeById, vector.source)
       if (typeof vector.target !== "object") vector.target = find(nodeById, vector.target)
@@ -91,7 +91,7 @@ export default function(vectors) {
     if (!nodes) return
 
 
-    for (var i = 0 i < totalVectors ++i) {
+    for (var i = 0; i < totalVectors; ++i) {
       strengths[i] = +strength(vectors[i], i, vectors)
     }
   }
@@ -99,7 +99,7 @@ export default function(vectors) {
   function initializeMagnitudes() {
     if (!nodes) return
 
-    for (var i = 0 i < totalVectors ++i) {
+    for (var i = 0; i < totalVectors; ++i) {
       magnitudes[i] = +magnitude(vectors[i], i, vectors)
     }
   }
@@ -109,7 +109,7 @@ export default function(vectors) {
 
     var timesNodeHasBeenSource = {}
 
-    for (var i = 0, source, radians i < totalVectors ++i) {
+    for (var i = 0, source, radians; i < totalVectors; ++i) {
       source = vectors[i].source
       timesNodeHasBeenSource[source.index] = (totalVectorsConnectingNode[source.index] || 0) + 1
 
@@ -122,7 +122,7 @@ export default function(vectors) {
     if (!nodes) return
 
     initializeAngles()
-    for (var i = 0, n = totalVectors i < n ++i) {
+    for (var i = 0, n = totalVectors; i < n; ++i) {
       xComponents[i] = Math.round(magnitudes[i] * Math.cos(angles[i]))
       yComponents[i] = Math.round(magnitudes[i] * Math.sin(angles[i]))
     }
