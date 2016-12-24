@@ -20,6 +20,7 @@ export default function(vectors) {
       magnitudes,
       xComponents,
       yComponents,
+      orientation = 0,
       angle = defaultAngle,
       angles,
       cone = defaultCone(),
@@ -42,8 +43,7 @@ export default function(vectors) {
     return coneDegrees(0,360)
   }
 
-  function coneDegrees(angle1, angle2, orientation) {
-    orientation = orientation || 0
+  function coneDegrees(angle1, angle2) {
     angle1 = angle1+orientation % 360
     angle2 = angle2+orientation % 360
     if (angle2 <= angle1) { angle2 += 360 }
@@ -121,7 +121,7 @@ export default function(vectors) {
       source = vectors[i].source
       timesNodeHasBeenSource[source.index] = (totalVectorsConnectingNode[source.index] || 0) + 1
 
-      radians = +angle(vectors[i], timesNodeHasBeenSource[source.index])*Math.PI/180
+      radians = +angle(vectors[i], timesNodeHasBeenSource[source.index], vectors)*Math.PI/180
       angles[i] = radians
     }
   }
@@ -152,6 +152,10 @@ export default function(vectors) {
 
   force.iterations = function(_) {
     return arguments.length ? (iterations = +_, force) : iterations
+  }
+
+  force.orientation = function(_) {
+    return arguments.length ? (orientation = +_, initializeComponents(), force) : orientation
   }
 
   force.strength = function(_) {
