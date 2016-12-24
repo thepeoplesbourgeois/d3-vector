@@ -23,8 +23,8 @@
     "verlet",
     "vector"
   ],
-  "author": "Josh Bourgeois",
-  "license": "ISC",
+  "author": "Joshua Bourgeois",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/thepeoplesbourgeois/d3-vector/issues"
   },
