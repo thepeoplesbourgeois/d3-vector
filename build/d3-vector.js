@@ -12,13 +12,13 @@ var constant = function(x) {
 };
 
 function index(d) {
-  return d.index;
+  return d.index
 }
 
 function find(nodeById, nodeId) {
   var node = nodeById.get(nodeId);
-  if (!node) throw new Error("missing: " + nodeId);
-  return node;
+  if (!node) throw new Error("missing: " + nodeId)
+  return node
 }
 
 var vector = function(vectors) {
@@ -37,10 +37,10 @@ var vector = function(vectors) {
       totalVectorsConnectingNode,
       iterations = 1;
 
-  if (vectors == null) vectors = [];
+  vectors = vectors || [];
 
   function defaultStrength(vector) {
-    return 1 / Math.min(totalVectorsConnectingNode[vector.source.index], totalVectorsConnectingNode[vector.target.index]);
+    return 1 / Math.min(totalVectorsConnectingNode[vector.source.index], totalVectorsConnectingNode[vector.target.index])
   }
 
   function defaultAngle(vector, vectorNumber) {
@@ -61,17 +61,25 @@ var vector = function(vectors) {
 
   function force(alpha) {
     for (var iteration = 0; iteration < iterations; ++iteration) {
-      for (var i = 0, source, target; i < totalVectors; ++i) {
+      for (var i = 0, source, target, remainingXDistance, remainingYDistance; i < totalVectors; ++i) {
         source = vectors[i].source, target = vectors[i].target;
 
-        target.vx += (source.x + source.vx + xComponents[i] - target.x) * strengths[i] * alpha;
-        target.vy += (source.y + source.vy + yComponents[i] - target.y) * strengths[i] * alpha;
+        remainingXDistance = (source.x + source.vx + xComponents[i] - target.x);
+        remainingYDistance = (source.y + source.vy + yComponents[i] - target.y);
+
+        if (!(source.fx || target.fx)) { remainingXDistance /= 2; }
+        if (!(source.fy || target.fy)) { remainingYDistance /= 2; }
+
+        source.vx -= remainingXDistance * strengths[i] * alpha;
+        source.vy -= remainingXDistance * strengths[i] * alpha;
+        target.vx += remainingXDistance * strengths[i] * alpha;
+        target.vy += remainingYDistance * strengths[i] * alpha;
       }
     }
   }
 
   function initialize() {
-    if (!nodes) return;
+    if (!nodes) return
 
     var i,
         totalNodes = nodes.length,
@@ -97,7 +105,7 @@ var vector = function(vectors) {
   }
 
   function initializeStrength() {
-    if (!nodes) return;
+    if (!nodes) return
 
 
     for (var i = 0; i < totalVectors; ++i) {
@@ -106,7 +114,7 @@ var vector = function(vectors) {
   }
 
   function initializeMagnitudes() {
-    if (!nodes) return;
+    if (!nodes) return
 
     for (var i = 0; i < totalVectors; ++i) {
       magnitudes[i] = +magnitude(vectors[i], i, vectors);
@@ -114,7 +122,7 @@ var vector = function(vectors) {
   }
 
   function initializeAngles() {
-    if (!nodes) return;
+    if (!nodes) return
 
     var timesNodeHasBeenSource = {};
 
@@ -128,10 +136,10 @@ var vector = function(vectors) {
   }
 
   function initializeComponents() {
-    if (!nodes) return;
+    if (!nodes) return
 
     initializeAngles();
-    for (var i = 0, n = totalVectors; i < n; ++i) {
+    for (var i = 0; i < totalVectors; ++i) {
       xComponents[i] = Math.round(magnitudes[i] * Math.cos(angles[i]));
       yComponents[i] = Math.round(magnitudes[i] * Math.sin(angles[i]));
     }
@@ -144,23 +152,23 @@ var vector = function(vectors) {
   };
 
   force.vectors = function(_) {
-    return arguments.length ? (vectors = _, initialize(), force) : vectors;
+    return arguments.length ? (vectors = _, initialize(), force) : vectors
   };
 
   force.id = function(_) {
-    return arguments.length ? (id = _, force) : id;
+    return arguments.length ? (id = _, force) : id
   };
 
   force.iterations = function(_) {
-    return arguments.length ? (iterations = +_, force) : iterations;
+    return arguments.length ? (iterations = +_, force) : iterations
   };
 
   force.strength = function(_) {
-    return arguments.length ? (strength = typeof _ === "function" ? _ : constant(+_), initializeStrength(), force) : strength;
+    return arguments.length ? (strength = typeof _ === "function" ? _ : constant(+_), initializeStrength(), force) : strength
   };
 
   force.magnitude = function(_) {
-    return arguments.length ? (magnitude = typeof _ === "function" ? _ : constant(+_), initializeMagnitudes(), force) : magnitude;
+    return arguments.length ? (magnitude = typeof _ === "function" ? _ : constant(+_), initializeMagnitudes(), force) : magnitude
   };
 
   force.cone = function(_) {
@@ -178,13 +186,12 @@ var vector = function(vectors) {
       case 2:
         cone = coneDegrees.apply(null, arguments);
         break
-
     }
     initializeComponents();
-    return force;
+    return force
   };
 
-  return force;
+  return force
 };
 
 exports.forceVector = vector;

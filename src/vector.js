@@ -52,11 +52,19 @@ export default function(vectors) {
 
   function force(alpha) {
     for (var iteration = 0; iteration < iterations; ++iteration) {
-      for (var i = 0, source, target; i < totalVectors; ++i) {
-        source = vectors[i].source, target = vectors[i].target;
+      for (var i = 0, source, target, remainingXDistance, remainingYDistance; i < totalVectors; ++i) {
+        source = vectors[i].source, target = vectors[i].target
 
-        target.vx += (source.x + source.vx + xComponents[i] - target.x) * strengths[i] * alpha
-        target.vy += (source.y + source.vy + yComponents[i] - target.y) * strengths[i] * alpha
+        remainingXDistance = (source.x + source.vx + xComponents[i] - target.x)
+        remainingYDistance = (source.y + source.vy + yComponents[i] - target.y)
+
+        if (!(source.fx || target.fx)) { remainingXDistance /= 2 }
+        if (!(source.fy || target.fy)) { remainingYDistance /= 2 }
+
+        source.vx -= remainingXDistance * strengths[i] * alpha
+        source.vy -= remainingXDistance * strengths[i] * alpha
+        target.vx += remainingXDistance * strengths[i] * alpha
+        target.vy += remainingYDistance * strengths[i] * alpha
       }
     }
   }
@@ -122,7 +130,7 @@ export default function(vectors) {
     if (!nodes) return
 
     initializeAngles()
-    for (var i = 0, n = totalVectors; i < n; ++i) {
+    for (var i = 0; i < totalVectors; ++i) {
       xComponents[i] = Math.round(magnitudes[i] * Math.cos(angles[i]))
       yComponents[i] = Math.round(magnitudes[i] * Math.sin(angles[i]))
     }
@@ -169,7 +177,6 @@ export default function(vectors) {
       case 2:
         cone = coneDegrees.apply(null, arguments)
         break
-
     }
     initializeComponents()
     return force
