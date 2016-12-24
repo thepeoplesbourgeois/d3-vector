@@ -128,7 +128,7 @@ var vector = function(vectors) {
 
     for (var i = 0, source, radians; i < totalVectors; ++i) {
       source = vectors[i].source;
-      timesNodeHasBeenSource[source.index] = (totalVectorsConnectingNode[source.index] || 0) + 1;
+      timesNodeHasBeenSource[source.index] = (timesNodeHasBeenSource[source.index] || 0) + 1;
 
       radians = +angle(vectors[i], timesNodeHasBeenSource[source.index], vectors)*Math.PI/180;
       angles[i] = radians;
