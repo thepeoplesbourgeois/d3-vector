@@ -48,7 +48,7 @@ export default function(vectors) {
     angle1 = angle1+orientation % 360
     angle2 = angle2+orientation % 360
     if (angle2 <= angle1) { angle2 += 360 }
-    return rotation === counterclockwise ? d3.interpolateNumber(-angle1, -angle2) : d3.interpolateNumber(angle1, angle2)
+    return d3.interpolateNumber(angle1, angle2)
   }
 
   function force(alpha) {
