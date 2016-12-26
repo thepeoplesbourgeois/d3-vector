@@ -24,6 +24,9 @@ export default function(vectors) {
       angle = defaultAngle,
       angles,
       cone = defaultCone(),
+      clockwise = 'clockwise',
+      counterclockwise = 'counterclockwise',
+      rotation = clockwise,
       nodes,
       totalVectors,
       totalVectorsConnectingNode,
@@ -47,7 +50,7 @@ export default function(vectors) {
     angle1 = angle1+orientation % 360
     angle2 = angle2+orientation % 360
     if (angle2 <= angle1) { angle2 += 360 }
-    return d3.interpolateNumber(angle1, angle2)
+    return rotation === counterclockwise ? d3.interpolateNumber(-angle1, -angle2) : d3.interpolateNumber(angle1, angle2)
   }
 
   function force(alpha) {
@@ -156,6 +159,10 @@ export default function(vectors) {
 
   force.orientation = function(_) {
     return arguments.length ? (orientation = +_, initializeComponents(), force) : orientation
+  }
+
+  force.rotation = function(_) {
+    return arguments.length ? (rotation = _ === counterclockwise ? _ : clockwise, initializeComponents(), force) : rotation
   }
 
   force.strength = function(_) {
