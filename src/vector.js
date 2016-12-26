@@ -24,9 +24,7 @@ export default function(vectors) {
       angle = defaultAngle,
       angles,
       cone = defaultCone(),
-      clockwise = 'clockwise',
-      counterclockwise = 'counterclockwise',
-      rotation = clockwise,
+      direction,
       nodes,
       totalVectors,
       totalVectorsConnectingNode,
@@ -127,6 +125,7 @@ export default function(vectors) {
       radians = +angle(vectors[i], timesNodeHasBeenSource[source.index], vectors)*Math.PI/180
       angles[i] = radians
     }
+    if (direction === 'reverse') { angles = angles.reverse() }
   }
 
   function initializeComponents() {
@@ -145,6 +144,10 @@ export default function(vectors) {
     initialize()
   }
 
+  force.nodes = function(_) {
+    return arguments.length ? (nodes = _, initialize(), force) : nodes
+  }
+
   force.vectors = function(_) {
     return arguments.length ? (vectors = _, initialize(), force) : vectors
   }
@@ -161,8 +164,8 @@ export default function(vectors) {
     return arguments.length ? (orientation = +_, initializeComponents(), force) : orientation
   }
 
-  force.rotation = function(_) {
-    return arguments.length ? (rotation = _ === counterclockwise ? _ : clockwise, initializeComponents(), force) : rotation
+  force.direction = function(_) {
+    return arguments.length ? (direction = _ === 'reverse' ? _ : null, initializeComponents(), force) : direction
   }
 
   force.strength = function(_) {
