@@ -13,6 +13,6 @@ Public methods on `vector` are all defined on the `force` object at the bottom o
 - `force.iterations`: (ADVANCED) I'm not really sure... it's just kind of a thing that Mike made work and it affects how strongly your force is applied during the simulation
 - `force.orientation`: the basis degree for orienting the angles of `force.cone`
 - `force.direction`: 'reverse' will invert the cone of dispersion
-- `force.strength`: a relative multiplier that affects the potency of each vector's `magnitude` while the simulation is running
+- `force.strength`: a relative multiplier that affects the potency of each vector while the simulation is running
 - `force.magnitude`: either a constant number indicating the length in pixels of each vector, or a function applied to each `vector` to determine its relative length
 - `force.cone`: an interpolative scale that is applied to a raw `degree` value to coerce the vector to go in a specific angle relative to its source
